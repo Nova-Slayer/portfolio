@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chandan Kumar - AI & Web Developer Portfolio">
+    <title>Chandan Portfolio | AI & Web Developer</title>
+    
+    <!-- Preconnect for faster font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Refined Professional Color Palette */
+            --bg-base: #09090b; /* Deep zinc */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-main: #06b6d4; /* Refined Cyan */
+            --accent-alt: #8b5cf6; /* Refined Violet */
+            --glass-bg: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --card-hover-bg: rgba(255, 255, 255, 0.04);
+        }
+
+        /* Reset & Base Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Advanced Background with Grid Texture & Hardware Accelerated Glows */
+        .bg-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            /* Subtle Grid */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .bg-gradients {
+            position: absolute;
+            top: -20%; left: -20%; width: 140%; height: 140%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+            will-change: transform; /* Hint to browser for scroll perf */
+        }
+
+        /* Optimized Custom Cursor - GPU Accelerated Scaling */
+        @media (pointer: fine) {
+            * { cursor: none; }
+            .cursor {
+                width: 24px; height: 24px;
+                border: 2px solid var(--accent-main);
+                border-radius: 50%;
+                position: fixed; top: 0; left: 0;
+                pointer-events: none; z-index: 9999;
+                /* Use transform for sizing instead of width/height for zero lag */
+                transform: translate3d(var(--x, -50%), var(--y, -50%), 0) scale(var(--scale, 1));
+                background-color: var(--bg, transparent);
+                transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s;
+                will-change: transform;
+            }
+            .cursor-dot {
+                width: 4px; height: 4px;
+                background: var(--accent-main);
+                border-radius: 50%;
+                position: fixed; top: 0; left: 0;
+                pointer-events: none; z-index: 9999;
+                transform: translate3d(var(--x, -50%), var(--y, -50%), 0);
+                will-change: transform;
+            }
+        }
+        @media (pointer: coarse) {
+            .cursor, .cursor-dot { display: none !important; }
+            * { cursor: auto; }
+        }
+
+        /* Typography & Layout using Fluid Math (clamp) */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem clamp(1rem, 8vw, 12%);
+            position: relative;
+            /* Browser optimization: don't render until near viewport */
+            content-visibility: auto;
+            contain-intrinsic-size: 100vh;
+        }
+
+        /* Fluid Typography - Scales perfectly on all devices */
+        h1 { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; }
+        h2 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 2.5rem; font-weight: 600; display: inline-block; }
+        h2 span { color: var(--accent-main); font-family: 'Space Mono', monospace; font-size: clamp(1.2rem, 3vw, 2rem); margin-right: 0.5rem; }
+        p { color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.15rem); max-width: 650px; line-height: 1.7; }
+
+        .glow-text {
+            background: linear-gradient(135deg, var(--text-main) 0%, var(--accent-main) 50%, var(--accent-alt) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: textShine 5s linear infinite;
+        }
+
+        @keyframes textShine { to { background-position: 200% center; } }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            padding: 1.2rem clamp(1rem, 8vw, 12%);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(9, 9, 11, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo { 
+            font-size: 1.4rem; font-weight: 800; color: var(--text-main); 
+            text-decoration: none; letter-spacing: 0.5px;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .logo span { color: var(--accent-main); font-weight: 400; opacity: 0.8;}
+        
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; margin-left: 2.5rem;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;
+            font-weight: 600; transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--text-main); }
+
+        /* Hero Section */
+        #hero { padding-top: 8rem; }
+        .mono-text {
+            font-family: 'Space Mono', monospace; color: var(--accent-main);
+            margin-bottom: 1.2rem; display: block; font-size: clamp(0.9rem, 2vw, 1.1rem);
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        .typewriter-container {
+            margin: 1.5rem 0; min-height: 4rem; 
+            display: flex; align-items: center; flex-wrap: wrap;
+        }
+
+        .typewriter {
+            font-family: 'Space Mono', monospace; color: var(--accent-alt);
+            font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 600;
+        }
+        .cursor-blink { animation: blink 1.2s infinite; font-size: clamp(1.5rem, 4vw, 2.2rem); color: var(--accent-alt); }
+
+        /* Skills */
+        .skills-container { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+        .skill-tag {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 0.6rem 1.2rem; border-radius: 8px;
+            font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--text-main);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .skill-tag:hover {
+            border-color: var(--accent-main); background: rgba(6, 182, 212, 0.05);
+            transform: translateY(-3px);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem; margin-top: 2.5rem;
+        }
+        
+        .project-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 2.5rem; border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; overflow: hidden;
+        }
+        .project-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--accent-main), var(--accent-alt));
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-8px); background: var(--card-hover-bg);
+            border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .project-card:hover::before { opacity: 1; }
+        
+        .project-card h3 { 
+            font-size: 1.6rem; margin-bottom: 1rem; color: var(--text-main); 
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* Discord Contact Section */
+        .discord-card {
+            background: #1e1f22; /* Authentic Discord Dark */
+            border-radius: 12px; padding: 1.8rem; max-width: 480px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.03);
+            margin-top: 2.5rem; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .discord-card:hover { transform: translateY(-5px) scale(1.01); }
+        .discord-info { display: flex; flex-direction: column; padding-right: 1.5rem; }
+        .discord-title { color: #f2f3f5; font-weight: 800; font-size: 0.85rem; letter-spacing: 0.5px; margin-bottom: 0.5rem; text-transform: uppercase;}
+        .discord-subtitle { color: #b5bac1; font-size: 1.05rem; font-weight: 600;}
+        .discord-btn {
+            background: #5865F2; color: white; text-decoration: none;
+            padding: 0.8rem 1.5rem; border-radius: 4px; font-weight: 600;
+            font-size: 0.95rem; transition: background 0.2s; white-space: nowrap;
+        }
+        .discord-btn:hover { background: #4752C4; }
+
+        /* Hardware Accelerated Reveal Animations */
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Mobile specific cleanups */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .discord-card { flex-direction: column; text-align: center; gap: 1.5rem; padding: 2rem 1.5rem; }
+            .discord-info { padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ultra-Optimized Background Layers -->
+    <div class="bg-layer">
+        <div class="bg-gradients"></div>
+    </div>
+
+    <!-- GPU-Accelerated Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <nav id="navbar">
+        <a href="#hero" class="logo">Chandan <span>Portfolio</span></a>
+        <div class="nav-links">
+            <a href="#hero">01. Home</a>
+            <a href="#about">02. About</a>
+            <a href="#projects">03. Projects</a>
+            <a href="#contact">04. Contact</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-content reveal">
+                <span class="mono-text">Hello World, I am</span>
+                <h1 class="glow-text">Chandan Kumar.</h1>
+                <h1>I engineer the future.</h1>
+                
+                <div class="typewriter-container">
+                    <span class="typewriter">Building <span id="typed-text"></span></span><span class="cursor-blink">_</span>
+                </div>
+
+                <p>
+                    A 12th-grade student and developer specializing in creating modern web experiences and integrating artificial intelligence into fun, professional tools.
+                </p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div class="reveal">
+                <h2><span>02.</span> About Me</h2>
+                <p>
+                    I am highly passionate about utilizing AI to architect functional and professional tools. I bridge the gap between creative prompt engineering and solid code architecture, focusing on blazing-fast single-page applications and automated workflows. When I'm not studying, I'm building lightweight, zero-build web applications and pushing the limits of UI/UX design.
+                </p>
+                
+                <h3 style="margin-top: 3.5rem; margin-bottom: 1.2rem; font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--accent-main); letter-spacing: 1px;">// CURRENT TECH STACK</h3>
+                <div class="skills-container">
+                    <div class="skill-tag">HTML5 / DOM Logic</div>
+                    <div class="skill-tag">CSS3 / Keyframes</div>
+                    <div class="skill-tag">JavaScript (ES6+)</div>
+                    <div class="skill-tag">AI APIs Integration</div>
+                    <div class="skill-tag">Vercel Deployment</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="reveal">
+                <h2><span>03.</span> Featured Work</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>Nova AI</h3>
+                        <p>A zero-build Universal AI Chat Interface functioning entirely from a single file, utilizing the OpenRouter API for seamless and ultra-fast LLM interactions.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>Offline AI Background Remover</h3>
+                        <p>A high-performance progressive web app built with MediaPipe Selfie Segmentation. It processes canvas elements locally for instant, offline background erasing.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>AI Discord Bot Builder</h3>
+                        <p>An automated, multi-step production web interface that dynamically generates complete Discord bot code structures utilizing local storage management.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="reveal">
+                <h2><span>04.</span> Let's Connect</h2>
+                <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Jump into my Discord server to chat!</p>
+                
+                <div class="discord-card">
+                    <div class="discord-info">
+                        <span class="discord-title">You've been invited to join a server</span>
+                        <span class="discord-subtitle">Chandan Community Server (Nova Slayer)</span>
+                    </div>
+                    <a href="https://discord.gg/VTU9XYJeqR" target="_blank" rel="noopener noreferrer" class="discord-btn" data-hover="true">Join Server</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-family: 'Space Mono', monospace; font-size: 0.85rem; border-top: 1px solid var(--glass-border);">
+        <p>Architected & Built by Chandan Kumar &copy; 2026</p>
+    </footer>
+
+    <!-- Maximum Performance Scripts -->
+    <script>
+        // 1. Hardware Accelerated Scroll Parallax (Using rAF for 60fps smoothing)
+        const bgGradients = document.querySelector('.bg-gradients');
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            lastScroll = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    // Parallax background
+                    bgGradients.style.transform = `translate3d(0, ${lastScroll * 0.1}px, 0)`;
+                    
+                    // Smart Navbar hide/show
+                    if (lastScroll > 100) {
+                        navbar.style.background = 'rgba(9, 9, 11, 0.85)';
+                        navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.5)';
+                    } else {
+                        navbar.style.background = 'rgba(9, 9, 11, 0.7)';
+                        navbar.style.boxShadow = 'none';
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        // 2. IntersectionObserver for Reveal Animations (Efficient)
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    obs.unobserve(entry.target); // Stop observing once revealed
+                }
+            });
+        }, { root: null, rootMargin: '0px', threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 3. Ultra-Smooth GPU Cursor Logic (Desktop Only)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursor = document.querySelector('.cursor');
+            const cursorDot = document.querySelector('.cursor-dot');
+            
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = mouseX;
+            let cursorY = mouseY;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                // Move dot instantly using CSS vars mapped to translate3d
+                cursorDot.style.setProperty('--x', `${mouseX}px`);
+                cursorDot.style.setProperty('--y', `${mouseY}px`);
+            }, { passive: true });
+
+            function updateCursor() {
+                // Smooth interpolation for the outer circle
+                cursorX += (mouseX - cursorX) * 0.2;
+                cursorY += (mouseY - cursorY) * 0.2;
+                
+                cursor.style.setProperty('--x', `${cursorX}px`);
+                cursor.style.setProperty('--y', `${cursorY}px`);
+                
+                requestAnimationFrame(updateCursor);
+            }
+            updateCursor();
+
+            // Hover state scaling via CSS variable (avoids layout shift)
+            const interactiveElements = document.querySelectorAll('a, .skill-tag, .project-card, [data-hover="true"]');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.setProperty('--scale', '2.2');
+                    cursor.style.setProperty('--bg', 'rgba(6, 182, 212, 0.1)');
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.setProperty('--scale', '1');
+                    cursor.style.setProperty('--bg', 'transparent');
+                });
+            });
+        }
+
+        // 4. Clean Typewriter Effect
+        const textArray = ["AI Tools", "Web Apps", "Discord Bots", "UI/UX Designs"];
+        let textIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+        const typedSpan = document.getElementById("typed-text");
+
+        function typeLoop() {
+            const currentStr = textArray[textIdx];
+            
+            if (isDeleting) {
+                charIdx--;
+                typedSpan.textContent = currentStr.substring(0, charIdx);
+            } else {
+                charIdx++;
+                typedSpan.textContent = currentStr.substring(0, charIdx);
+            }
+
+            let speed = isDeleting ? 40 : 100;
+
+            if (!isDeleting && charIdx === currentStr.length) {
+                speed = 2000; // Pause at end of word
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                textIdx = (textIdx + 1) % textArray.length;
+                speed = 400; // Pause before new word
+            }
+
+            setTimeout(typeLoop, speed);
+        }
+
+        // Initialize typewriter
+        setTimeout(typeLoop, 1000);
+    </script>
+</body>
+</html>
