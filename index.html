@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#090c15">
+    <meta name="description" content="Chandan Kumar - 12th Grade AI & Web Developer Portfolio">
+    <title>Chandan Portfolio | Developer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Premium Deep Slate Theme */
+            --bg-base: #090c15;
+            --bg-grid: rgba(255, 255, 255, 0.02);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #3b82f6;
+            
+            /* Optimized Glass Cards */
+            --card-bg: rgba(17, 24, 39, 0.85);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --card-hover: rgba(30, 41, 59, 0.95);
+        }
+
+        /* --- GLOBAL RESETS --- */
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            overflow-x: hidden;
+            width: 100%;
+            overscroll-behavior-y: none;
+        }
+
+        /* --- LAG-FREE WALLPAPER ENGINE --- */
+        #wallpaper-container {
+            position: fixed; inset: 0; z-index: -2;
+            background-color: var(--bg-base);
+            contain: strict; 
+            overflow: hidden;
+        }
+
+        .bg-grid {
+            position: absolute; inset: 0; z-index: -1;
+            background-image: 
+                linear-gradient(var(--bg-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .wallpaper-orb {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 150vmax; height: 150vmax;
+            margin-left: -75vmax; margin-top: -75vmax;
+            background: radial-gradient(
+                circle at center, 
+                rgba(59, 130, 246, 0.12) 0%, 
+                rgba(168, 85, 247, 0.08) 25%, 
+                rgba(225, 29, 72, 0.03) 50%, 
+                transparent 70%
+            );
+            transform: translate3d(0,0,0) scale(var(--zoom, 1)) rotate(var(--rot, 0deg));
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 1.2rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(9, 12, 21, 0.95) 0%, transparent 100%);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+
+        .logo { font-size: 1.2rem; font-weight: 800; color: #fff; text-decoration: none; letter-spacing: -0.5px; }
+        .logo span { color: var(--accent); font-weight: 400; }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { 
+            color: var(--text-dim); text-decoration: none; font-size: 0.85rem; 
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s;
+        }
+        
+        @media (hover: hover) {
+            .nav-links a:hover { color: #fff; }
+        }
+
+        /* --- MAIN LAYOUT & TYPOGRAPHY --- */
+        main { position: relative; z-index: 1; padding: 0 5%; max-width: 1100px; margin: 0 auto; }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 6rem 0; }
+
+        h2 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -1px; margin-bottom: 2rem; }
+        p { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--text-dim); line-height: 1.6; max-width: 650px; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #64748b 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* --- SHIMMERING NAME ANIMATION --- */
+        .animated-name {
+            display: inline-block;
+            font-size: clamp(3rem, 8vw, 5.5rem); 
+            font-weight: 800; 
+            line-height: 1.1; 
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #ffffff 20%, #3b82f6 50%, #ffffff 80%);
+            background-size: 200% auto;
+            color: #fff;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: liquidShine 4s linear infinite;
+            margin-bottom: 0.2rem;
+        }
+
+        @keyframes liquidShine {
+            to { background-position: 200% center; }
+        }
+
+        /* --- CONFLICT-FREE REVEAL --- */
+        .fade-up-element {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: smoothFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        @keyframes smoothFadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- WORD CAROUSEL --- */
+        .word-carousel {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap; 
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dim);
+        }
+        .carousel-static { margin-right: 8px; }
+        .carousel-scroll {
+            height: 1.2em; 
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .carousel-inner {
+            display: flex;
+            flex-direction: column;
+            animation: spinWords 8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        .carousel-inner span {
+            height: 1.2em;
+            line-height: 1.2em;
+            display: block;
+            white-space: nowrap; 
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes spinWords {
+            0%, 15% { transform: translateY(0); }
+            25%, 40% { transform: translateY(-1.2em); }
+            50%, 65% { transform: translateY(-2.4em); }
+            75%, 90% { transform: translateY(-3.6em); }
+            100% { transform: translateY(-4.8em); }
+        }
+
+        /* --- PREMIUM 3D CARDS --- */
+        .premium-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px; padding: 2.5rem;
+            transform: perspective(1000px) translate3d(0, var(--ty, 0px), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+            transition: transform 0.2s ease-out, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (hover: hover) {
+            .premium-card:hover {
+                background: var(--card-hover);
+                border-color: rgba(255,255,255,0.12);
+                --ty: -6px;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            }
+        }
+
+        /* --- SKILLS PILLS --- */
+        .skills-wrapper { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+        .skill-pill {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.6rem 1.4rem; border-radius: 50px; font-weight: 500; font-size: 0.9rem;
+            transition: all 0.2s ease; cursor: default;
+        }
+        
+        @media (hover: hover) {
+            .skill-pill:hover { background: #fff; color: #000; }
+        }
+
+        /* --- PROJECTS GRID & LINKS --- */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .project-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .premium-card h3 { font-size: 1.4rem; margin-bottom: 0.6rem; color: #fff; }
+        .premium-card p { font-size: 0.95rem; flex-grow: 1; }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: gap 0.3s ease, color 0.3s ease;
+        }
+        
+        @media (hover: hover) {
+            .project-link:hover {
+                gap: 0.8rem;
+                color: #fff;
+            }
+        }
+
+        /* --- DISCORD SECTION --- */
+        .discord-box {
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem;
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.1) 0%, rgba(17, 24, 39, 0.9) 100%);
+            border-color: rgba(88, 101, 242, 0.25);
+            flex-direction: row; /* reset for desktop */
+        }
+        
+        @media (hover: hover) {
+            .discord-box:hover { border-color: rgba(88, 101, 242, 0.5); }
+            .join-btn:hover { background: #5865F2; color: #fff; transform: scale(1.05); }
+        }
+
+        .discord-info { display: flex; align-items: center; gap: 1.5rem; }
+        .discord-logo {
+            width: 56px; height: 56px; background: #5865F2; border-radius: 14px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 8px 16px rgba(88, 101, 242, 0.2);
+            flex-shrink: 0;
+        }
+        .discord-logo svg { width: 30px; height: 30px; fill: white; }
+        .join-btn {
+            background: #fff; color: #000; text-decoration: none; font-weight: 700;
+            padding: 0.9rem 2rem; border-radius: 50px; font-size: 0.95rem;
+            transition: transform 0.2s ease-out, background 0.2s;
+            text-align: center;
+        }
+
+        /* --- HARDWARE ACCELERATED REVEAL ANIMATIONS --- */
+        .reveal { 
+            opacity: 0; transform: translate3d(0, 30px, 0); 
+            transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); 
+            will-change: opacity, transform; 
+        }
+        .reveal.active { opacity: 1; transform: translate3d(0, 0, 0); }
+
+        /* --- RESPONSIVE MOBILE ADJUSTMENTS --- */
+        @media (max-width: 768px) {
+            .nav-links { gap: 1rem; }
+            .nav-links a { font-size: 0.75rem; }
+            .discord-box { flex-direction: column; text-align: left; align-items: flex-start; padding: 2rem; }
+            .discord-info { flex-direction: column; align-items: flex-start; gap: 1rem;}
+            .join-btn { width: 100%; }
+            section { padding: 5rem 0; min-height: auto; margin-bottom: 2rem; }
+            #hero { min-height: 100vh; margin-bottom: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="wallpaper-container" aria-hidden="true">
+        <div class="bg-grid"></div>
+        <div class="wallpaper-orb" id="orb"></div>
+    </div>
+
+    <nav>
+        <a href="#hero" class="logo">Chandan <span>Portfolio</span></a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="hero">
+            <div class="fade-up-element">
+                <p style="color: var(--accent); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-size: 0.85rem; padding-bottom: 0.5rem;">
+                    12th Grade Developer
+                </p>
+            </div>
+            
+            <div class="fade-up-element delay-1">
+                <h1 class="animated-name">Chandan Kumar.</h1>
+            </div>
+            
+            <div class="fade-up-element delay-2" style="padding-bottom: 10px;">
+                <h1 class="gradient-text" style="font-size: clamp(2.5rem, 6vw, 4.5rem);">I engineer the future.</h1>
+            </div>
+            
+            <div class="fade-up-element delay-3">
+                <div class="word-carousel">
+                    <div class="carousel-static">Building</div>
+                    <div class="carousel-scroll">
+                        <div class="carousel-inner">
+                            <span>Web Experiences</span>
+                            <span>Discord Bots</span>
+                            <span>AI Tools</span>
+                            <span>Modern UIs</span>
+                            <span aria-hidden="true">Web Experiences</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fade-up-element delay-3">
+                <p>
+                    Passionate about creating modern web experiences and integrating artificial intelligence into fun, highly professional tools.
+                </p>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="reveal premium-card interactive-card" style="margin-bottom: 2rem;">
+                <h2>About Me</h2>
+                <p style="max-width: 800px;">
+                    I bridge the gap between creative prompt engineering and solid code architecture. I focus on building blazing-fast, single-page applications and automated workflows. My goal is to craft UIs that look clean and perform flawlessly.
+                </p>
+                
+                <div class="skills-wrapper">
+                    <div class="skill-pill">HTML5 & CSS3</div>
+                    <div class="skill-pill">JavaScript (Vanilla)</div>
+                    <div class="skill-pill">Vercel Deployment</div>
+                    <div class="skill-pill">AI Tools & Logic</div>
+                    <div class="skill-pill">Modern UI/UX</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2 class="reveal">Featured Work</h2>
+            <div class="projects-grid">
+                
+                <div class="premium-card reveal interactive-card">
+                    <div class="project-icon">💬</div>
+                    <h3>Nova AI</h3>
+                    <p>A zero-build Universal AI Chat Interface functioning entirely from a single file, utilizing the OpenRouter API for seamless LLM interactions.</p>
+                </div>
+
+                <div class="premium-card reveal interactive-card" style="transition-delay: 0.1s;">
+                    <div class="project-icon">🖼️</div>
+                    <h3>BG Remover AI</h3>
+                    <p>A progressive web app built with MediaPipe Selfie Segmentation. Processes canvas elements locally for instant, offline background erasing.</p>
+                </div>
+
+                <div class="premium-card reveal interactive-card" style="transition-delay: 0.2s;">
+                    <div class="project-icon">🤖</div>
+                    <h3>Discord Bot Builder</h3>
+                    <p>An automated production web interface that dynamically generates complete Discord bot code structures utilizing local storage management.</p>
+                    <a href="https://discord-bot-store-advanced.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">
+                        Visit Project <span>➔</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2 class="reveal">Let's Connect</h2>
+            <div class="premium-card discord-box reveal interactive-card">
+                <div class="discord-info">
+                    <div class="discord-logo">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Discord Logo">
+                            <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4C14.84 4.33 14.63 4.8 14.46 5.17C12.85 4.92 11.25 4.92 9.68 5.17C9.5 4.8 9.3 4.33 9.11 4C7.61 4.26 6.17 4.71 4.84 5.33C2.17 9.36 1.41 13.3 1.77 17.21C3.56 18.55 5.28 19.38 6.96 19.92C7.38 19.36 7.76 18.76 8.09 18.12C7.49 17.89 6.92 17.61 6.38 17.27C6.52 17.17 6.66 17.06 6.79 16.95C10.02 18.45 14.07 18.45 17.25 16.95C17.38 17.06 17.52 17.17 17.66 17.27C17.12 17.61 16.55 17.89 15.95 18.12C16.28 18.76 16.66 19.36 17.08 19.92C18.76 19.38 20.48 18.55 22.27 17.21C22.7 12.63 21.55 8.74 19.27 5.33ZM8.56 14.5C7.49 14.5 6.61 13.51 6.61 12.3C6.61 11.09 7.47 10.11 8.56 10.11C9.64 10.11 10.53 11.1 10.51 12.3C10.51 13.51 9.64 14.5 8.56 14.5ZM15.54 14.5C14.47 14.5 13.59 13.51 13.59 12.3C13.59 11.09 14.45 10.11 15.54 10.11C16.63 10.11 17.51 11.1 17.49 12.3C17.49 13.51 16.63 14.5 15.54 14.5Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 0.2rem; color: #fff;">Chandan Community Server</h3>
+                        <p style="color: var(--text-dim); font-size: 0.9rem;">(Nova Slayer) • Peer-to-peer dev network</p>
+                    </div>
+                </div>
+                <a href="https://discord.gg/VTU9XYJeqR" target="_blank" rel="noopener noreferrer" class="join-btn">Accept Invite</a>
+            </div>
+        </section>
+
+        <footer style="padding: 2.5rem 0; text-align: center; color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.05);">
+            &copy; 2026 Chandan Kumar. Engineered for the future.
+        </footer>
+    </main>
+
+    <script>
+        // 1. Butter-Smooth Scroll Engine
+        const orb = document.getElementById('orb');
+        let scrollTicking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                window.requestAnimationFrame(() => {
+                    const scrolled = window.scrollY;
+                    if (orb) {
+                        const scale = 1 + (scrolled * 0.0003);
+                        const rotation = scrolled * 0.02;
+                        orb.style.setProperty('--zoom', scale);
+                        orb.style.setProperty('--rot', `${rotation}deg`);
+                    }
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        }, { passive: true });
+
+        // 2. Intersection Observer for Clean Loading Reveal
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { root: null, rootMargin: '0px', threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight) {
+                el.classList.add('active');
+            } else {
+                observer.observe(el);
+            }
+        });
+
+        // 3. Perfected 3D Tilt Effect
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.querySelectorAll('.interactive-card').forEach(card => {
+                let rafId = null;
+
+                card.addEventListener('mousemove', e => {
+                    if (rafId) cancelAnimationFrame(rafId);
+                    
+                    rafId = requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left; 
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateX = ((y - centerY) / centerY) * -4; 
+                        const rotateY = ((x - centerX) / centerX) * 4;
+                        
+                        card.style.setProperty('--rx', `${rotateX}deg`);
+                        card.style.setProperty('--ry', `${rotateY}deg`);
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    if (rafId) cancelAnimationFrame(rafId);
+                    card.style.setProperty('--rx', '0deg');
+                    card.style.setProperty('--ry', '0deg');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
